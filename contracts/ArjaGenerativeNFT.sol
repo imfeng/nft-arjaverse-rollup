@@ -154,7 +154,9 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
                                 '"value":"',
                                 currentWord.textHue,
                                 '"}',
-                                "]",
+                                "],",
+                                // TODO: animation_url
+                                '"animation_url":"', currentWord.textHue,'"',
                                 "}"
                             )
                         )
