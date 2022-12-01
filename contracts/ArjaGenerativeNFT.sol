@@ -1,9 +1,9 @@
-// SPDX-License-Identifier: MIT
-
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Base64.sol";
 
 interface IPlonkVerifier {
@@ -17,10 +17,12 @@ interface IAirdropContract {
     function setInitialTokenId(uint256 _firstNFTID) external returns (uint256);
 }
 
-contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
+contract ArNFT is ERC721Enumerable, Ownable {
     using Strings for uint256;
+    using Strings for uint16;
+    using Strings for uint8;
     mapping(uint256 => Word) public TokenIdToWord;
-    string baseAnimationURI = "https://arja.nft/animation/";
+    // string baseAnimationURI = "https://arar.nft/animation/";
     IPlonkVerifier verifier;
 
     struct Word {
@@ -34,7 +36,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         bool isRevealed;
     }
 
-    constructor() ERC721("Arjaverse NFT", "ARJA") {}
+    constructor() ERC721("NFT", "ARAR") {}
 
     function setVerifier(address _verifier) public onlyOwner {
         verifier = IPlonkVerifier(_verifier);
@@ -48,7 +50,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         for (uint i = 0; i < pubSignals.length; i++) {
             address to = address(uint160(pubSignals[i]));
             uint256 tokenId = totalSupply() + 1;
-            TokenIdToWord[tokenId] = Word(0, 0, 0, 0, 0 ,0, 0, false);
+            // TokenIdToWord[tokenId] = Word(0, 0, 0, 0, 0 ,0, 0, false);
             _safeMint(to, tokenId);
         }
     }
@@ -66,54 +68,75 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         return num;
     }
 
+    function setWord(
+        uint256 tokenId,
+        uint16 score,
+        uint8 background,
+        uint8 effect,
+        uint8 body,
+        uint8 eyes,
+        uint8 decoration,
+        uint8 ball
+    ) external onlyOwner {
+        require(!TokenIdToWord[tokenId].isRevealed, "Already revealed");
+        TokenIdToWord[tokenId] = Word(score, background, effect, body, eyes, decoration, ball, true);
+    }
+
     function buildImage(uint256 _tokenId) private view returns (string memory) {
         Word memory currentWord = TokenIdToWord[_tokenId];
-        string memory random = randomNum(361, 3, 3).toString();
+        // string memory random = randomNum(361, 3, 3).toString();
         return
             Base64.encode(
                 bytes(
                     abi.encodePacked(
                         '<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">',
                         '<rect height="500" width="500" y="0" x="0" />',
-                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(',
-                        random,
-                        ',100%,80%)">',
-                        currentWord.score,
+                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(0,0%,100%)">',
+                            currentWord.score.toString(),
                         "</text>",
-                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(',
-                        random,
-                        ',100%,80%)">',
-                        currentWord.background,
-                        "</text>",
-                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(',
-                        random,
-                        ',100%,80%)">',
-                        currentWord.effect,
-                        "</text>",
-                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(',
-                        random,
-                        ',100%,80%)">',
-                        currentWord.body,
-                        "</text>",
-                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(',
-                        random,
-                        ',100%,80%)">',
-                        currentWord.eyes,
-                        "</text>",
-                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(',
-                        random,
-                        ',100%,80%)">',
-                        currentWord.decoration,
-                        "</text>",
-                        '<text font-size="18" y="10%" x="50%" text-anchor="middle" fill="hsl(',
-                        random,
-                        ',100%,80%)">',
-                        currentWord.ball,
-                        "</text>",
+                        getImageDetail(_tokenId),
                         "</svg>"
                     )
                 )
             );
+    }
+
+    function getImageDetail(uint256 _tokenId) public view returns (string memory) {
+        Word memory currentWord = TokenIdToWord[_tokenId];
+        return string(abi.encodePacked(
+            '<text font-size="18" y="20%" x="50%" text-anchor="middle" fill="hsl(0,0%,100%)">',
+            currentWord.background.toString(),
+            "</text>",
+            '<text font-size="18" y="30%" x="50%" text-anchor="middle" fill="hsl(0,0%,100%)">',
+            currentWord.effect.toString(),
+            "</text>",
+            '<text font-size="18" y="40%" x="50%" text-anchor="middle" fill="hsl(0,0%,100%)">',
+            currentWord.body.toString(),
+            "</text>",
+            '<text font-size="18" y="50%" x="50%" text-anchor="middle" fill="hsl(0,0%,100%)">',
+            currentWord.eyes.toString(),
+            "</text>"
+            // '<text font-size="18" y="60%" x="50%" text-anchor="middle" fill="hsl(0,0%,100%)">',
+            // currentWord.decoration.toString(),
+            // "</text>",
+            // '<text font-size="18" y="70%" x="50%" text-anchor="middle" fill="hsl(0,0%,100%)">',
+            // currentWord.ball.toString(),
+            // "</text>"
+        ));
+    }
+
+    function getAttributes(uint256 _tokenId) public view returns (string memory) {
+        Word memory currentWord = TokenIdToWord[_tokenId];
+        return string(abi.encodePacked(
+            "[",
+                "{\"trait_type\": \"Background\",\"value\":\"", currentWord.background.toString(), "\"}",
+                ",{\"trait_type\": \"Effect\",\"value\":\"", currentWord.effect.toString(), "\"}",
+                ",{\"trait_type\": \"Body\",\"value\":\"", currentWord.body.toString(), "\"}",
+                ",{\"trait_type\": \"Eyes\",\"value\":\"", currentWord.eyes.toString(), "\"}",
+                // ",{\"trait_type\": \"Decoration\",\"value\":\"", currentWord.decoration.toString(), "\"}",
+                // ",{\"trait_type\": \"Ball\",\"value\":\"", currentWord.ball.toString(), "\"}",
+            "]"
+        ));
     }
 
     function buildMetadata(uint256 _tokenId)
@@ -121,7 +144,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         view
         returns (string memory)
     {
-        Word memory currentWord = TokenIdToWord[_tokenId];
+        string memory token = Strings.toString(_tokenId);
         return
             string(
                 abi.encodePacked(
@@ -129,21 +152,15 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
-                                '{ "name": "', name() , ' #', _tokenId,
-                                '","image": "',
+                                "{ \"name\": \"", name() , " #", token,
+                                "\",\"image\": \"",
                                     "data:image/svg+xml;base64,",
                                     buildImage(_tokenId),
-                                '","attributes": ',
-                                    "[",
-                                        '{"trait_type": "Background",', '"value":"', currentWord.background, '"}',
-                                        '{"trait_type": "Effect",', '"value":"', currentWord.effect, '"}',
-                                        '{"trait_type": "Body",', '"value":"', currentWord.body, '"}',
-                                        '{"trait_type": "Eyes",', '"value":"', currentWord.eyes, '"}',
-                                        '{"trait_type": "Decoration",', '"value":"', currentWord.decoration, '"}',
-                                        '{"trait_type": "Ball",', '"value":"', currentWord.ball, '"}',
-                                    "],",
+                                "\",\"attributes\": ",
+                                    getAttributes(_tokenId),
                                 // TODO: animation_url
-                                '"animation_url":"', baseAnimationURI, _tokenId, '.html"}'
+                                // ",\"animation_url\":\"", baseAnimationURI, token, ".html\""
+                                "}"
                             )
                         )
                     )
