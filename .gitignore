@@ -6,3 +6,4 @@ local
 build
 *.ptau
 .history
+.env
