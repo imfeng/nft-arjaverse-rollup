@@ -20,21 +20,27 @@ async function main() {
     let arjaNFTFactory = await hre.ethers.getContractFactory("ArjaGenerativeNFT")
     let arjaNFT = await arjaNFTFactory.deploy()
     console.log(`ERC721 address: ${arjaNFT.address}`)
+    for (let index = 0; index < 64; index++) {
+        console.log({
+            index
+        })
+        await arjaNFT.mint();
+    }
 
-    // DEPLOY PLONK VERIFIER
-    let plonkFactory = await hre.ethers.getContractFactory("PlonkVerifier")
-    let plonk = await plonkFactory.deploy()
-    console.log(`Plonk Verifier contract address: ${plonk.address}`)
+    // // DEPLOY PLONK VERIFIER
+    // let plonkFactory = await hre.ethers.getContractFactory("PlonkVerifier")
+    // let plonk = await plonkFactory.deploy()
+    // console.log(`Plonk Verifier contract address: ${plonk.address}`)
 
-    // DEPLOY PRIVATE AIRDROP
-    let mainFactory = await hre.ethers.getContractFactory("PrivateAirdrop")
-    let privateAirdrop: PrivateAirdrop = (
-        await mainFactory.deploy(
-            arjaNFT.address,
-            BigNumber.from(NUM_ERC721_PER_REDEMPTION),
-            plonk.address,
-            merkleTreeRoot)) as PrivateAirdrop
-    console.log(`PrivateAirdrop contract address: ${privateAirdrop.address} merkleTree root: ${merkleTreeRoot}`)
+    // // DEPLOY PRIVATE AIRDROP
+    // let mainFactory = await hre.ethers.getContractFactory("PrivateAirdrop")
+    // let privateAirdrop: PrivateAirdrop = (
+    //     await mainFactory.deploy(
+    //         arjaNFT.address,
+    //         BigNumber.from(NUM_ERC721_PER_REDEMPTION),
+    //         plonk.address,
+    //         merkleTreeRoot)) as PrivateAirdrop
+    // console.log(`PrivateAirdrop contract address: ${privateAirdrop.address} merkleTree root: ${merkleTreeRoot}`)
 }
 
 main()
