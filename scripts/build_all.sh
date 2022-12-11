@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PHASE1=./ptau/final_16.ptau
+PHASE1=/home/ec2-user/zk-circom/ptau/final_26.ptau
 BUILD_DIR=./build/test_nft-ecdsa
 SRC_DIR=./circuits/
 CIRCUIT_NAME=test_nft-ecdsa
