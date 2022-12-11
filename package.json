@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "hardhat": "ts-mocha",
-    "test": "ts-mocha ./test/PrivateAirdropIntegration.spec.ts"
+    "test": "ts-mocha ./test/PrivateAirdropIntegration.spec.ts",
+    "test:ecc": "NODE_OPTIONS=--max_old_space_size=56000 mocha -r ts-node/register ./test/batch_ecdsa.ts"
+
   },
   "author": "sragss",
   "license": "ISC",
   "dependencies": {
+    "@noble/secp256k1": "^1.7.0",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "^4.4.2",
@@ -17,9 +20,11 @@
     "@typechain/hardhat": "^2.3.1",
     "@types/chai": "^4.2.22",
     "@types/expect": "^24.3.0",
+    "@types/lodash": "^4.14.191",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.0",
     "chai": "^4.3.4",
+    "circom_tester": "^0.0.19",
     "circomlib": "^2.0.5",
     "circomlibjs": "^0.0.8",
     "dotenv": "^16.0.0",
@@ -27,6 +32,7 @@
     "express": "^4.18.2",
     "hardhat": "^2.6.6",
     "hardhat-gas-reporter": "^1.0.4",
+    "lodash": "^4.17.21",
     "mocha": "^10.1.0",
     "snarkjs": "^0.4.10",
     "ts-mocha": "^8.0.0",

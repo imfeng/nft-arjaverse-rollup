@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "target": "ES6",
+      "target": "ESNext",
       "allowJs": true,
       "module": "commonjs",
       "strict": true,
@@ -9,7 +9,8 @@
       "moduleResolution": "Node",
       "allowSyntheticDefaultImports": true,
       "lib": [
-        "es2019"
+        "ESNext",
+        "ESNext.BigInt"
       ]
     },
     "include": ["./scripts", "./test", "./typechain", "./local", "smartContractTest/testMinting.js"],

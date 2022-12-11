@@ -1,4 +1,4 @@
-include "../node_modules/circomlib/circuits/comparators.circom";
+include "../../node_modules/circomlib/circuits/comparators.circom";
 
 template MintNFT(batchSize) {
   signal input addressList[batchSize]; // public
