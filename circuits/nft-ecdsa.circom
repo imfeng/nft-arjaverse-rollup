@@ -4,20 +4,20 @@ include "./ecdsa/batch_ecdsa.circom";
 include "./ecdsa/pub_to_address.circom";
 
 function AnswerMsgHash(k){
-  // Mint Arjaverse, answer=1
-  // 0xa2b260d6ba0b37a1b36b085b6a1544d67eba9f9bd25d9c2445e7ab3f2c9ce6f3
-  // Mint Arjaverse, answer=2
-  // 0xca6f0d6d0039c818cab7f0757c0775bcf75c433615d18b1309519328a5846263
-  // Mint Arjaverse, answer=3
-  // 98768037419805037253152873914763310256784780947544896445314716995641847717904
+  // Mint Arjaverse NFT, Answer:3
+  // 0xf72003f94b4bffde4528cc8e8c5213a3c34ea6c167f1ad7b0a1bc64b45db5b94
+  // 728393791347317652n,
+  //   14073369235182169467n,
+  //   4983457900297065379n,
+  //   17807237295867953118n
   if(k==0) {
-    return 17790985646615961616;
+    return 728393791347317652;
   } else if(k==1) {
-    return 16731820450410456013;
+    return 14073369235182169467;
   } else if(k==2) {
-    return 16562123182431658121;
+    return 4983457900297065379;
   } else if(k==3) {
-    return 15734656149191876749;
+    return 17807237295867953118;
   } else {
     return 0;
   }
