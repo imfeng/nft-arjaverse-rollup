@@ -1,9 +1,9 @@
 #!/bin/bash
 
 PHASE1=/home/ec2-user/zk-circom/ptau/final_28.ptau
-BUILD_DIR=./build/test_nft-ecdsa
+BUILD_DIR=./build/test_nft-ecdsa-8
 SRC_DIR=./circuits/
-CIRCUIT_NAME=test_nft-ecdsa
+CIRCUIT_NAME=test_nft-ecdsa-8
 INPUT_FILE=./test/inputs/mint8-0.json
 export NODE_OPTIONS="--max-old-space-size=1762144"
 
