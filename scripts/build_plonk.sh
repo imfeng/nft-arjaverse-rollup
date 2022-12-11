@@ -4,7 +4,7 @@ PHASE1=./ptau/final_16.ptau
 BUILD_DIR=./build/test_nft-ecdsa
 SRC_DIR=./circuits/
 CIRCUIT_NAME=test_nft-ecdsa
-INPUT_FILE=./circuits/test_nft-ecdsa.json
+INPUT_FILE=./test/inputs/mint4-0.json
 export NODE_OPTIONS="--max-old-space-size=1762144"
 
 if [ -f "$PHASE1" ]; then
