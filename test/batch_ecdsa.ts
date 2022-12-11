@@ -268,7 +268,7 @@ function getRPrime(pp: Point, msghash_bigint: bigint, r_bigint: bigint, s_bigint
   return rprime_bigint;
 }
 
-function genInputs(storagePath: string, batchSize: number = 4) {
+function genInputs(storagePath: string, batchSize: number = 2) {
   const storageData = fs.readFileSync(storagePath, 'utf8');
   const datas = JSON.parse(storageData);
   const mintInfoList = datas.storage.mintInfo;
