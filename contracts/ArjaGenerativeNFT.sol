@@ -7,23 +7,31 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Base64.sol";
 import "./ArjaGenerativeNFTLibrary.sol";
 
-interface IPlonkVerifier {
-    function verifyProof(bytes memory proof, uint256[] memory pubSignals)
-        external
-        view
-        returns (bool);
-}
-
-interface IAirdropContract {
-    function setInitialTokenId(uint256 _firstNFTID) external returns (uint256);
+// interface IPlonkVerifier {
+//     function verifyProof(bytes memory proof, uint256[] memory pubSignals)
+//         external
+//         view
+//         returns (bool);
+// }
+interface IGroth16Verifier {
+    function verifyProof(
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[64] memory input
+    ) external view returns (bool);
 }
 
 contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
     using Strings for uint256;
     using Strings for uint16;
     using Strings for uint8;
+
+    event AnswerResult(address indexed user, bool result);
+
     mapping(uint256 => ArNFTLibrary.Word) public TokenIdToWord;
 
+    uint256 constant batchSize = 32;
     string BACKGROUND = "Background";
     string SPECIAL_EFFECT = "SpecialEffect";
     string BODY = "Body";
@@ -167,7 +175,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
 
     string BASE_URI = "ipfs://QmfGCmsdebybNBWhqor2cxnJYUU89LgJ3KWLsj9veuhADZ/";
     string baseAnimationURI = "ipfs://QmbZ91BVJkQayQJjjeVCjWXipcE7faCqK9obgWqAWNaw93/";
-    IPlonkVerifier verifier;
+    IGroth16Verifier verifier;
 
     constructor() ERC721("NFT", "ARAR") {}
 
@@ -222,29 +230,35 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
     }
 
     function setVerifier(address _verifier) public onlyOwner {
-        verifier = IPlonkVerifier(_verifier);
+        verifier = IGroth16Verifier(_verifier);
     }
 
-    function mint() external {
+    function _mint(address to) internal {
         uint256 tokenId = totalSupply() + 1;
-        _safeMint(msg.sender, tokenId);
         setWord(tokenId);
+        _safeMint(to, tokenId);
     }
 
-    function batchMint(bytes calldata proof, uint256[] calldata pubSignals)
+    function rollupMint(
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[64] memory input
+    )
         external
         onlyOwner
     {
         require(
-            verifier.verifyProof(proof, pubSignals),
+            verifier.verifyProof(a, b, c, input),
             "Proof verification failed"
         );
-        for (uint256 i = 0; i < pubSignals.length; i++) {
-            address to = address(uint160(pubSignals[i]));
-            uint256 tokenId = totalSupply() + 1;
-            // TokenIdToWord[tokenId] = Word(0, 0, 0, 0, 0 ,0, 0, false);
-            _safeMint(to, tokenId);
-            setWord(tokenId);
+        for(uint256 i = 0; i < batchSize; i++) {
+            address to = address(uint160(input[batchSize + i]));
+            bool result = bool(input[i] == 1);
+            emit AnswerResult(to, result);
+            if(result) {
+                _mint(to);
+            }
         }
     }
 
