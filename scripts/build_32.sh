@@ -62,7 +62,7 @@ echo "DONE ($((end-start))s)"
 echo "****GENERATING PROOF FOR SAMPLE INPUT****"
 start=`date +%s`
 # npx snarkjs groth16 prove "$BUILD_DIR"/"$CIRCUIT_NAME".zkey "$BUILD_DIR"/witness.wtns "$BUILD_DIR"/proof.json "$BUILD_DIR"/public.json
-RAPID_SNARK_PATH prove "$BUILD_DIR"/"$CIRCUIT_NAME".zkey "$BUILD_DIR"/witness.wtns "$BUILD_DIR"/proof.json "$BUILD_DIR"/public.json
+"$RAPID_SNARK_PATH" prove "$BUILD_DIR"/"$CIRCUIT_NAME".zkey "$BUILD_DIR"/witness.wtns "$BUILD_DIR"/proof.json "$BUILD_DIR"/public.json
 end=`date +%s`
 echo "DONE ($((end-start))s)"
 
