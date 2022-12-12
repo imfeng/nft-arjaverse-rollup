@@ -5,7 +5,7 @@ BUILD_DIR=./build/test_nft-ecdsa-32
 SRC_DIR=./circuits/
 CIRCUIT_NAME=test_nft-ecdsa-32
 INPUT_FILE=./test/inputs/mint32-0.json
-RAPID_SNARK_PATH=/home/ec2-user/rapid_snark/build/rapid
+RAPID_SNARK_PATH=/home/ec2-user/rapidsnark/build/prover
 export NODE_OPTIONS="--max-old-space-size=1762144"
 
 if [ -f "$PHASE1" ]; then
