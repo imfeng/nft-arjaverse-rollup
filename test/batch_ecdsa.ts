@@ -278,7 +278,7 @@ function genInputs(storagePath: string, batchSize: number = 32) {
       console.log('BREAK');
       break;
     }
-    fs.writeFileSync(path.resolve(__dirname, `../build/mint${batchSize}-${index}.json`), JSON.stringify(inputs, null, 2));
+    fs.writeFileSync(path.resolve(__dirname, `../mint${batchSize}-${index}.json`), JSON.stringify(inputs, null, 2));
   }
   console.log('DONE');
 
@@ -332,4 +332,4 @@ function parseStorage(mintInfoList: any[]) {
   }
 }
 
-genInputs(path.resolve(__dirname, './storage20221211.json'));
+genInputs(path.resolve(__dirname, '../storage.json'));

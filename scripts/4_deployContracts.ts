@@ -1,6 +1,5 @@
 const hre = require("hardhat");
-import { BigNumber } from "@ethersproject/bignumber";
-import {getMerkleTreeFromPublicListOfCommitments, getMerkleRoot} from "../utils/TestUtils";
+
 async function main() {
     
     const arjaVerifierFactory = await hre.ethers.getContractFactory("ArjaVerifier")
@@ -11,7 +10,10 @@ async function main() {
 
     // DEPLOY ERC721 contract 
     const arjaNFTFactory = await hre.ethers.getContractFactory("ArjaGenerativeNFT")
-    const arjaNFT = await arjaNFTFactory.deploy()
+    const arjaNFT = await arjaNFTFactory.deploy(
+        '0x2ca8e0c643bde4c2e08ab1fa0da3401adad7734d',
+        '0x326c977e6efc84e512bb9c30f76e30c160ed06fb',
+    )
     console.log({
         arjaNFT: arjaNFT.address
     })

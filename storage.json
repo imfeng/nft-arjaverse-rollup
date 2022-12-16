@@ -1,0 +1,248 @@
+{
+    "updatedTime": 1670940528394,
+    "storage": {
+        "mintInfo": [
+            {
+                "address": "0x3c964d1b6bbb13e117de9529a2d94211dec96690",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0x8eab322479dd01a2bc9e0049a56064e8dc3570235e46219edc6ec0a6b484da260d33fce3aa5ec6510402440ee27b67ff73d33bc65a9feee9f0182083bb7c64e31b",
+                "score": 0,
+                "createdAt": 1670939528093
+            }, {
+                "address": "0xbcbfc41ce34f895577c4a3c623d157c04597400a",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0xf5dfc67a0ed0e6c6ff931f26dfbb0f2e7a80963656013e6df32db648afa81721379c408d358f067cab938283d7c5783465d1703fb5e9a8e744e97966ca34c8761b",
+                "score": 0,
+                "createdAt": 1670939619219
+            }, {
+                "address": "0x6da16f4735d3e0b273154768c19053594b7e75e5",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0x8405bd808a5ed769a0440851317b1b62b1eadb116771fdd46e8a36d9fcbb439a502d32a8494ee58db332a82fcf26c1f160a1fccb0bb29354bdcc21c8752a29a11c",
+                "score": 0,
+                "createdAt": 1670939703141
+            }, {
+                "address": "0xa8c17a42b2d1fdc4f19c89b2a58e837d0faa7c53",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0x68ac0262d50a623f2eb9c5ef1622481d974429a8c10c0d11c599a7882677e9b943f06dd2ce5a913d5813ee860bc87927a080d00701fa40bc834603f871156e861c",
+                "score": 0,
+                "createdAt": 1670939730198
+            }, {
+                "address": "0x4b47a8d015d7d18a39733dc72e516b665e837976",
+                "message": "Mint Arjaverse NFT, Answer:2",
+                "signature": "0xeeffcb8b45c784e1a3c83d09062888e98d2005c40593e04895661c42932743eb461a09618b1a72a0aa21acd52df55aa54b61ae1f462986dad1386b777bf96f711c",
+                "score": 0,
+                "createdAt": 1670939780964
+            }, {
+                "address": "0xa73acaf36ffbfd2de63e329c40582584cf7bd44f",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0xfd47392b01c8263319b2ef07c8962ffd90d055f6e166246277b944df8305dd9a1c3bf8ea2faaa2eb57181de725189217fd7eeb4b23d8c5065609a00e6fcb6d1f1b",
+                "score": 0,
+                "createdAt": 1670939882816
+            }, {
+                "address": "0xd61c862c9f580afba04b6bd1c843b7c3dfa22b86",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0xacfeafa0c4986aaae585a2b3c287b8e471e307ab4d8f0c679eb6a604546a8fd26dbbc93cca05fe95313f9d11017b0bcdb449067848f7b1c94085d2ae55ac55ae1c",
+                "score": 0,
+                "createdAt": 1670939902620
+            }, {
+                "address": "0x8e1a271e6f417231119683207af262dfd05653f1",
+                "message": "Mint Arjaverse NFT, Answer:2",
+                "signature": "0xbe765281e4c48e59e14605382c36c6d1ed8224755e50cc37ad8c64909ebb75b969cdf25c3ca12335c28f94da268908c806fc4dd0e02978e54de3492b71e39fc41c",
+                "score": 0,
+                "createdAt": 1670939936981
+            }, {
+                "address": "0x60ec58c1f4415255a8aabc2f9eda3900142a8a37",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0xd4ab9aa799ff2d00336db6dd03bb10c0601a5d7072a1cf79a6034a78395dc32e3591b5da25bbfa10ec510cc2dbd8629ca54df8fd91683563ec0c50ba1e5514741c",
+                "score": 0,
+                "createdAt": 1670939977384
+            }, {
+                "address": "0xd2851b173d718a5992a0873b3a4c29f0de4a0e52",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0xee7516ff7f6d750014e1dd832f6fe3c2a86bce49d3451377a1c4b338284c163252cdbaa27c16cc4b1b5e1c75cb965fd29e82dc5d7a71dc189f51e327bb5fa8ca1c",
+                "score": 0,
+                "createdAt": 1670940002578
+            }, {
+                "address": "0xd57565a1b0076eba1cd97d2283d3e9a1c2132f75",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0x66b726afec7aa4b474960966e78037b886ca9649464845763490dfbea0f8d8e441ce031131934a27628155d82c280d4b2e8dc268cf912a4444036952ef6e50161b",
+                "score": 0,
+                "createdAt": 1670940019904
+            }, {
+                "address": "0x20c11f97963607ad99186692e04484639be64a64",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0x823d6b8b42cdd42b8590a0261e6d169045cb4905130f97a433a325273a1ab9763407d4faa4870b96f665d2dce5ca40346d5a08c6bf36ccede89f8b9a0d78fc201b",
+                "score": 0,
+                "createdAt": 1670940068729
+            }, {
+                "address": "0xdf40f52a873a46e03035c0ac2d535ff3d8746079",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0xc1099c05775404dcf02fa6bb5d8fd5c0d3991d69a76d0a2e3731cf7834d659911426cfed0cf08c87ccc3754e4c0bd8bb33a4a29512fd0e9ccfdbd82b5ac08cf61b",
+                "score": 0,
+                "createdAt": 1670940102447
+            }, {
+                "address": "0x9c965bd8db922f81fb3175a154b1160954173b6b",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0x0999c267b762e6b64aeaed9aee963a2f328fad611b4863f4b9d2d2d3e08851e04ee5a80db139faf69cb67503d873adc49c502ef00b239c18790109bc106ec11c1b",
+                "score": 0,
+                "createdAt": 1670940105736
+            }, {
+                "address": "0xd656e30465b768b7717799aaaa0bd9e1b5ebe4d5",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0xa39ec5b391cf088e88250578db6d00a12e5adb1f0b09666ea3491be9a85618df36436cd30e8ffd5f2bfe9b08540a0533d08aeb4c7fa77ee765cf7ac5a31262231b",
+                "score": 0,
+                "createdAt": 1670940117931
+            }, {
+                "address": "0xf67dde737638ceff63cdcc39d1ab0f9f5b91633b",
+                "message": "Mint Arjaverse NFT, Answer:1",
+                "signature": "0x89adf204b010484ba5182726009b3660bc174c4ad31b28a9137bbaf088cab23c4e6f245cd24fccf9f1f63fe0ea2cac82d1cc911d32708daee7cef822cc56b69d1b",
+                "score": 0,
+                "createdAt": 1670940121553
+            }, {
+              "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+              "message": "Mint Arjaverse NFT, Answer:1",
+              "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+              "score": 0,
+              "createdAt": 1670940141051
+          },{
+            "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+            "message": "Mint Arjaverse NFT, Answer:1",
+            "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+            "score": 0,
+            "createdAt": 1670940141051
+        },{
+          "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+          "message": "Mint Arjaverse NFT, Answer:1",
+          "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+          "score": 0,
+          "createdAt": 1670940141051
+      },{
+        "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+        "message": "Mint Arjaverse NFT, Answer:1",
+        "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+        "score": 0,
+        "createdAt": 1670940141051
+    },{
+      "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+      "message": "Mint Arjaverse NFT, Answer:1",
+      "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+      "score": 0,
+      "createdAt": 1670940141051
+  },{
+    "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+    "message": "Mint Arjaverse NFT, Answer:1",
+    "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+    "score": 0,
+    "createdAt": 1670940141051
+},{
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+},{
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+  "address": "0x2c4dea9113098a646c38573a368f5888e84109b6",
+  "message": "Mint Arjaverse NFT, Answer:1",
+  "signature": "0x4fd9a8bc09a90acb26422e43be53bcee2946a793ff8aadc5fe2d408e47a8dff054584b5f3111a1f49207d518689835b834382d49d52d0728206f4d09cc3c52481c",
+  "score": 0,
+  "createdAt": 1670940141051
+}, {
+                "address": "0xceae34d0d9e089e939173fd35b3203f8982ecc95",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0xc2f41ea5ed778b95e8ddc0a90b053e036f14f3b4e7d8a5aa4c53153c99b1548f381659de025ec981cf450114f2df275474e06570e3c9205b2a93309a28d3250e1c",
+                "score": 0,
+                "createdAt": 1670940159475
+            }, {
+                "address": "0x0c377e10b05c947ccc6dea1b189a0530b76a637c",
+                "message": "Mint Arjaverse NFT, Answer:2",
+                "signature": "0xb89f678fd4433acf44446c4d567bd20a2d3f8ece7093bf222614b95146f1387a58a7f436345f37f969a5a18d75a1f81b863de19d631507909b55093bb08f01961c",
+                "score": 0,
+                "createdAt": 1670940161845
+            }, {
+                "address": "0x0c2f8db299826ced31ae74cd39f7efab08a07520",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0xbabefc8ec84396555314fde674111e53020e5b86b23314212a8ef4cea4dffa876a3fb5a63c115bf28409f69bf2e86fdba37c633b27eccc48346516810d1cb6a91b",
+                "score": 0,
+                "createdAt": 1670940266589
+            }, {
+                "address": "0x46cb47f655b4b9a7feaec0bdd965b7c218bf0567",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0x851514573de4f650b98de9a37b04e5b57c955daa23a72ef93cb8aff980699bf45735abbe5433ce7e67fdd343cf8dd0ce15524073ac473a6f8826a1258940353e1b",
+                "score": 0,
+                "createdAt": 1670940474343
+            }, {
+                "address": "0xad1ccbcec797986b85a5e1fd7d4ee23e3f40de37",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0xd2fb23e185bb7ce4f229bc8daec14e6668dc2e6a8eb48482677d89dd559998dc78b35bb50225b26abf7b5e8d18bf368fc519137869fd7c522c75ec12dac541f11c",
+                "score": 0,
+                "createdAt": 1670940491766
+            }, {
+                "address": "0xc4b649f46df18b9d42334f445451389f707e8c38",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0x6736a0782240d92c9704958531939b70f51f8199619bd62aa9a7fcacbf11267b22fcd50024ff1f48a0bc0f7e4651e54e94eea40b5e1690fff95aed526796adfb1b",
+                "score": 0,
+                "createdAt": 1670940507439
+            }, {
+                "address": "0x3fa5376a3764dff743be89cb00423313ed567bf2",
+                "message": "Mint Arjaverse NFT, Answer:3",
+                "signature": "0xe6ce7316d6f28906ff3761ebb90d52450e18ee6b54f823535192c662b2891294545b0fee153f9fee62278e9c868037897b2bb0d9ded48cbf46fc3f71afba49a81b",
+                "score": 0,
+                "createdAt": 1670940528394
+            }
+        ]
+    }
+}

@@ -4,7 +4,7 @@ import "./Base64.sol";
 
 library ArNFTLibrary {
 
-    struct Word {
+    struct Metadata {
         uint16 score;
         uint8 background;
         uint8 effect;

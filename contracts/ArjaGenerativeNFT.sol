@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0 <0.9.0;
 
+import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -22,23 +25,26 @@ interface IGroth16Verifier {
     ) external view returns (bool);
 }
 
-contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
+contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
     using Strings for uint256;
     using Strings for uint16;
     using Strings for uint8;
 
     event AnswerResult(address indexed user, bool result);
 
-    mapping(uint256 => ArNFTLibrary.Word) public TokenIdToWord;
+    mapping(uint256 => ArNFTLibrary.Metadata) public tokenIdToMetadata;
 
-    uint256 constant batchSize = 32;
-    string BACKGROUND = "Background";
-    string SPECIAL_EFFECT = "SpecialEffect";
-    string BODY = "Body";
-    string DECORATION = "Decoration";
-    string EYES = "Eyes";
-    string BALL = "Ball";
+    uint256 constant batchSize = 8;
+    string constant BACKGROUND = "Background";
+    string constant SPECIAL_EFFECT = "SpecialEffect";
+    string constant BODY = "Body";
+    string constant DECORATION = "Decoration";
+    string constant EYES = "Eyes";
+    string constant BALL = "Ball";
 
+    uint256 currentRevealId = 1;
+
+    // Metadata Traits
     string[8] private backgroundTraits = [
         "9A9FA8",
         "FFEF5B",
@@ -177,22 +183,15 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
     string baseAnimationURI = "ipfs://QmbZ91BVJkQayQJjjeVCjWXipcE7faCqK9obgWqAWNaw93/";
     IGroth16Verifier verifier;
 
-    constructor() ERC721("NFT", "ARAR") {}
-
-    function random()
-        internal
-        view
-        returns (uint256)
-    {
-        return uint256(
-            keccak256(
-                abi.encodePacked(block.timestamp, block.difficulty, msg.sender)
-            )
-        );
+    constructor(
+        address _vrfCoordinator,
+        address _link
+    ) ERC721("TEST Arjaverse NFT", "TESTARJA") VRFConsumerBaseV2(_vrfCoordinator) {
+        COORDINATOR = VRFCoordinatorV2Interface(_vrfCoordinator);
+        LINKTOKEN = LinkTokenInterface(_link);
     }
 
-    function randomDistinctItemFromAllPagination() private returns (uint64) {
-        uint256 rand = random();
+    function randomDistinctItemFromAllPagination(uint256 rand) private returns (uint64) {
         uint256 index = rand % allPagination.length;
         uint64 key = allPagination[index];
         allPagination[index] = allPagination[allPagination.length - 1];
@@ -200,9 +199,9 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         return key;
     }
 
-    function getRandomWorkFromPagination() private returns (ArNFTLibrary.Word memory) {
-        uint64 key = randomDistinctItemFromAllPagination();
-        ArNFTLibrary.Word memory currentWord;
+    function getRandomWorkFromPagination(uint256 rand) private returns (ArNFTLibrary.Metadata memory) {
+        uint64 key = randomDistinctItemFromAllPagination(rand);
+        ArNFTLibrary.Metadata memory currentWord;
 
         currentWord.background = uint8(key & 0xFF);
         key = key >> 8;
@@ -235,9 +234,13 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
 
     function _mint(address to) internal {
         uint256 tokenId = totalSupply() + 1;
-        setWord(tokenId);
         _safeMint(to, tokenId);
     }
+
+    // function selfMint(address to) public onlyOwner {
+    //     uint256 tokenId = totalSupply() + 1;
+    //     _safeMint(to, tokenId);
+    // }
 
     function rollupMint(
         uint[2] memory a,
@@ -254,7 +257,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         );
         for(uint256 i = 0; i < batchSize; i++) {
             address to = address(uint160(input[batchSize + i]));
-            bool result = bool(input[i] == 1);
+            bool result = (input[i] == 1);
             emit AnswerResult(to, result);
             if(result) {
                 _mint(to);
@@ -273,30 +276,9 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         baseAnimationURI = _newAnimationURI;
     }
 
-    function setWord(uint256 tokenId) internal {
-        require(!TokenIdToWord[tokenId].isRevealed, "Already revealed");
-        TokenIdToWord[tokenId] = getRandomWorkFromPagination();
-    }
-
-    function buildImagePart1() private pure returns (string memory) {
-        return ArNFTLibrary.buildImagePart1();
-    }
-
-    function buildImagePart2(uint256 _tokenId) private view returns (string memory) {
-        ArNFTLibrary.Word memory currentWord = TokenIdToWord[_tokenId];
-        return ArNFTLibrary.buildImagePart2(
-            ArNFTLibrary.concatHref(BASE_URI, BACKGROUND, backgroundTraits[currentWord.background]),
-            ArNFTLibrary.concatHref(BASE_URI, SPECIAL_EFFECT, specialEffectTraits[currentWord.effect]),
-            ArNFTLibrary.concatHref(BASE_URI, BODY, bodyTraits[currentWord.body])
-        );
-    }
-    function buildImagePart3(uint256 _tokenId) private view returns (string memory) {
-        ArNFTLibrary.Word memory currentWord = TokenIdToWord[_tokenId];
-        return ArNFTLibrary.buildImagePart3(
-            ArNFTLibrary.concatHref(BASE_URI, DECORATION, decorationTraits[currentWord.decoration]),
-            ArNFTLibrary.concatHref(BASE_URI, EYES, eyesTraits[currentWord.eyes]),
-            ArNFTLibrary.concatHref(BASE_URI, BALL, ballTraits[currentWord.ball])
-        );
+    function setWord(uint256 tokenId, uint256 rand) internal {
+        require(!tokenIdToMetadata[tokenId].isRevealed, "Already revealed");
+        tokenIdToMetadata[tokenId] = getRandomWorkFromPagination(rand);
     }
 
     function getAttributesTopHalf(uint256 _tokenId)
@@ -304,9 +286,8 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         view
         returns (string memory)
     {
-        ArNFTLibrary.Word memory currentWord = TokenIdToWord[_tokenId];
-        return 
-        ArNFTLibrary.getAttributesLeft(
+        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
+        return ArNFTLibrary.getAttributesLeft(
             backgroundTraits[currentWord.background],
             specialEffectTraits[currentWord.effect],
             bodyTraits[currentWord.body]
@@ -318,7 +299,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         view
         returns (string memory)
     {
-        ArNFTLibrary.Word memory currentWord = TokenIdToWord[_tokenId];
+        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
         return ArNFTLibrary.getAttributesRight(
             decorationTraits[currentWord.decoration],
             eyesTraits[currentWord.eyes],
@@ -328,7 +309,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
 
     function getAnimationUrl(uint256 _tokenId) private view returns (bytes memory) {
         string memory token = Strings.toString(_tokenId);
-        ArNFTLibrary.Word memory currentWord = TokenIdToWord[_tokenId];
+        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
         return abi.encodePacked(
             baseAnimationURI,
             '?bg=', backgroundTraits[currentWord.background],
@@ -343,13 +324,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         returns (string memory)
     {
         string memory token = Strings.toString(_tokenId);
-        // string memory imageString = Base64.encode(bytes(abi.encodePacked(
-        //     buildImagePart1(),
-        //     buildImagePart2(_tokenId),
-        //     buildImagePart3(_tokenId)
-        // )));
-
-        ArNFTLibrary.Word memory currentWord = TokenIdToWord[_tokenId];
+        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
         bytes memory imageHash = abi.encodePacked(
             currentWord.background.toString(), '-',
             currentWord.effect.toString(), '-',
@@ -366,20 +341,14 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
-                                '{ "name": "',
-                                // name(),
-                                "Arjaverse #",
-                                token,
-                                '","image": "',
-                                BASE_URI, imageHash, '.png',
+                                '{ "name": "',"Arjaverse #", token,
+                                '","image": "',BASE_URI, imageHash, '.png',
                                 '","attributes": [',
-                                getAttributesTopHalf(_tokenId),
-                                getAttributesBottomHalf(_tokenId),
-                                ']',
-                                ',"animation_url":"',
-                                    getAnimationUrl(_tokenId),
-                                    '",'
-                                '"description": "A mysterious creature of immense size appears in the galaxy, floating out of nowhere and slowly approaching Earth.\\nSuddenly! A mouth opened, and the Earth was unexpectedly swallowed up in an instant, emitting an unknown light - BANG! The Seal explodes!\\nFrom then on, a planet full of sea otters was born - the Arjaverse!\\nThe planet is 75% water, ice, and gems, and its exterior retains the appearance of Earth and the unknown creature, becoming a fantastical illusion.\\nThis gave rise to the incredibly cute and unique adventurers - the seal citizens from Arjaverse."',
+                                        getAttributesTopHalf(_tokenId),
+                                        getAttributesBottomHalf(_tokenId),
+                                    ']',
+                                ',"animation_url":"',getAnimationUrl(_tokenId),'"'
+                                ',"description": "A mysterious creature of immense size appears in the galaxy, floating out of nowhere and slowly approaching Earth.\\nSuddenly! A mouth opened, and the Earth was unexpectedly swallowed up in an instant, emitting an unknown light - BANG! The Seal explodes!\\nFrom then on, a planet full of sea otters was born - the Arjaverse!\\nThe planet is 75% water, ice, and gems, and its exterior retains the appearance of Earth and the unknown creature, becoming a fantastical illusion.\\nThis gave rise to the incredibly cute and unique adventurers - the seal citizens from Arjaverse."',
                                 "}"
                             )
                         )
@@ -402,8 +371,52 @@ contract ArjaGenerativeNFT is ERC721Enumerable, Ownable {
         return buildMetadata(_tokenId);
     }
 
-    function contractURI() public pure returns (string memory) {
-        return "https://arjaverse.art/contract.json";
+    // function contractURI() public pure returns (string memory) {
+    //     return "https://arjaverse.art/contract.json";
+    // }
+
+    // VRF
+    VRFCoordinatorV2Interface COORDINATOR;
+    LinkTokenInterface LINKTOKEN;
+    uint64 s_subscriptionId;
+    bytes32 keyHash = 0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15;
+
+    uint32 callbackGasLimit = 2000000;
+    uint16 requestConfirmations = 3;
+    uint256[] public s_randomWords;
+    // uint256 public s_requestId;
+    mapping(uint256 => uint256) public requestIdToTokenId;
+
+    function setSubscriptionId(uint64 subscriptionId) public onlyOwner {
+        s_subscriptionId = subscriptionId;
     }
 
+    function setKeyHash(bytes32 _keyHash) public onlyOwner {
+        keyHash = _keyHash;
+    }
+
+    function setVrfCallbackGasLimit(uint32 _callbackGasLimit) public onlyOwner {
+        callbackGasLimit = _callbackGasLimit;
+    }
+
+    function requestRandomWords(uint32 numWords) internal {
+        COORDINATOR.requestRandomWords(
+            keyHash,
+            s_subscriptionId,
+            requestConfirmations,
+            callbackGasLimit,
+            numWords
+        );
+    }
+
+    function fulfillRandomWords(
+        uint256,
+        uint256[] memory randomWords
+    ) internal override {
+        uint256 endTokenId = currentRevealId + randomWords.length;
+        for(uint256 tokenId = currentRevealId; tokenId < endTokenId; tokenId++) {
+            uint256 rand = randomWords[tokenId];
+            setWord(tokenId, rand);
+        }
+    }
 }
