@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INPUT_NAME=mint8-0
+INPUT_NAME=mint8-8
 BUILD_DIR=./build/test_nft-ecdsa-8
 CIRCUIT_NAME=test_nft-ecdsa-8
 RAPID_SNARK_PATH=/home/ec2-user/rapidsnark/build/prover
