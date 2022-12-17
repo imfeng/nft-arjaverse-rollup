@@ -94,12 +94,27 @@ function genInputs(storagePath: string, batchSize: number) {
   const storageData = fs.readFileSync(storagePath, 'utf8');
   const datas = JSON.parse(storageData);
   const mintInfoList = datas.storage.mintInfo;
+  
+  mintInfoList.forEach((item: any, index: number) => {
+    const { address, message, signature} = item;
+    const isVaild = verifyEthereumsignature(address, message, signature);
+    if(!isVaild) {
+      console.error('invalid signature', index , item)
+    }
+  });
+  const validMintInfoList = mintInfoList.filter((item: any) => {
+    const { address, message, signature} = item;
+    const isVaild = verifyEthereumsignature(address, message, signature);
+    return isVaild;
+  });
+
   console.log({
     batchSize,
-    length: mintInfoList.length,
+    rawLength: mintInfoList.length,
+    validLength: validMintInfoList.length,
   })
-  for (let index = 0; (index + batchSize) <= mintInfoList.length; index += batchSize) {
-    const inputs = parseStorage(mintInfoList.slice(index, index + batchSize));
+  for (let index = 0; (index + batchSize) <= validMintInfoList.length; index += batchSize) {
+    const inputs = parseStorage(validMintInfoList.slice(index, index + batchSize));
     if(inputs.addressList.length !== batchSize) {
       console.log('BREAK');
       break;
@@ -156,6 +171,13 @@ function parseStorage(mintInfoList: any[]) {
     msghash,
     pubkey
   }
+}
+
+function verifyEthereumsignature(address: string, message: string, signature: string) {
+  const msgHash = utils.hashMessage(message);
+  const splitSignatureValue = utils.splitSignature(signature);
+  const recover = utils.recoverAddress(msgHash, splitSignatureValue);
+  return address.toLowerCase() === recover.toLowerCase();
 }
 
 genInputs(path.resolve(__dirname, '../storage.json'), batchSize);
