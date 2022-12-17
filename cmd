@@ -1,7 +1,5 @@
-./build/test_nft-ecdsa/test_nft-ecdsa_cpp/test_nft-ecdsa ./test/inputs/mint2-0.json ./build/test_nft-ecdsa/mint2-0.wtns
+./build/test_nft-ecdsa-8/test_nft-ecdsa-8_cpp/test_nft-ecdsa-8 ./test/inputs/mint8-0.json ./build/test_nft-ecdsa-8/mint8-0.wtns
 
-./build/prove <circuit.zkey> <witness.wtns> <proof.json> <public.json>
+/home/ec2-user/rapidsnark/build/prover ./build/test_nft-ecdsa-8/test_nft-ecdsa-8.zkey ./build/test_nft-ecdsa-8/mint8-0.wtns ./build/test_nft-ecdsa-8/mint8-0.proof ./build/test_nft-ecdsa-8/mint8-0.public.json
 
-/home/ec2-user/rapidsnark/build/prover ./build/test_nft-ecdsa/test_nft-ecdsa.zkey ./build/test_nft-ecdsa/mint2-0.wtns ./build/test_nft-ecdsa/mint2-0.proof ./build/test_nft-ecdsa/mint2-0.public.json
-
-npx snarkjs plonk prove ./build/test_nft-ecdsa/test_nft-ecdsa.zkey ./build/test_nft-ecdsa/mint2-0.wtns ./build/test_nft-ecdsa/mint2-0.proof ./build/test_nft-ecdsa/mint2-0.public.json
+npx snarkjs zkey export soliditycalldata ./build/test_nft-ecdsa-8/mint8-0.public.json ./build/test_nft-ecdsa-8/mint8-0.proof

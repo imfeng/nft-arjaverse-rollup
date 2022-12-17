@@ -8,43 +8,34 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Base64.sol";
-import "./ArjaGenerativeNFTLibrary.sol";
+import "./ArjaverseNFTLibrary.sol";
 
-// interface IPlonkVerifier {
-//     function verifyProof(bytes memory proof, uint256[] memory pubSignals)
-//         external
-//         view
-//         returns (bool);
-// }
 interface IGroth16Verifier {
     function verifyProof(
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[64] memory input
+        uint[16] memory input
     ) external view returns (bool);
 }
 
-contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
+contract ArjaverseNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
     using Strings for uint256;
     using Strings for uint16;
     using Strings for uint8;
-
     event AnswerResult(address indexed user, bool result);
 
-    mapping(uint256 => ArNFTLibrary.Metadata) public tokenIdToMetadata;
+    uint256 constant MAX_SUPPLY = 64;
+    uint256 constant TEAM_RESERVE = 8;
+    uint256 constant BATCH_SZIE = 8;
 
-    uint256 constant batchSize = 8;
+    // Metadata Traits
     string constant BACKGROUND = "Background";
     string constant SPECIAL_EFFECT = "SpecialEffect";
     string constant BODY = "Body";
     string constant DECORATION = "Decoration";
     string constant EYES = "Eyes";
     string constant BALL = "Ball";
-
-    uint256 currentRevealId = 1;
-
-    // Metadata Traits
     string[8] private backgroundTraits = [
         "9A9FA8",
         "FFEF5B",
@@ -111,8 +102,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         "StarRing"
     ];
 
-    uint64[] private allPagination = 
-    [
+    uint64[] private allPagination = [
         0x000000000000,
         0x010101000001,
         0x020102010102,
@@ -179,16 +169,38 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         0x030410000003
     ];
 
+    uint256 currentTeamReserve = 0;
+    uint256 currentRevealId = 1;
+    mapping(uint256 => ArjaverseNFTLibrary.Metadata) public tokenIdToMetadata;
     string BASE_URI = "ipfs://QmfGCmsdebybNBWhqor2cxnJYUU89LgJ3KWLsj9veuhADZ/";
-    string baseAnimationURI = "ipfs://QmbZ91BVJkQayQJjjeVCjWXipcE7faCqK9obgWqAWNaw93/";
+    string baseAnimationURI = "ipfs://QmSkahSGA9fe6AGkjvB4cbKeeiE8XJxh4hgxqaCp7UeGBr/";
     IGroth16Verifier verifier;
+
+    // VRF
+    VRFCoordinatorV2Interface COORDINATOR;
+    LinkTokenInterface LINKTOKEN;
+    uint64 s_subscriptionId;
+    bytes32 keyHash = 0xff8dedfbfa60af186cf3c830acbc32c05aae823045ae5ea7da1e45fbfaba4f92; // 500 gwei
+    uint32 callbackGasLimit = 2500000;
+    uint16 requestConfirmations = 3;
 
     constructor(
         address _vrfCoordinator,
-        address _link
-    ) ERC721("TEST Arjaverse NFT", "TESTARJA") VRFConsumerBaseV2(_vrfCoordinator) {
+        address _link,
+        address _verifier
+    ) ERC721("Arjaverse NFT", "ARJA") VRFConsumerBaseV2(_vrfCoordinator) {
         COORDINATOR = VRFCoordinatorV2Interface(_vrfCoordinator);
         LINKTOKEN = LinkTokenInterface(_link);
+        verifier = IGroth16Verifier(_verifier);
+    }
+
+    function teamReserveMint(address _to, uint32 _num) external onlyOwner {
+        require(totalSupply() + _num <= MAX_SUPPLY, "Exceeds max supply");
+        require(currentTeamReserve + _num <= TEAM_RESERVE, "Exceeds team reserve");
+        for(uint256 i = 0; i < _num; i++) {
+            _mint(_to);
+        }
+        currentTeamReserve += _num;
     }
 
     function randomDistinctItemFromAllPagination(uint256 rand) private returns (uint64) {
@@ -199,9 +211,9 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         return key;
     }
 
-    function getRandomWorkFromPagination(uint256 rand) private returns (ArNFTLibrary.Metadata memory) {
+    function getRandomWorkFromPagination(uint256 rand) private returns (ArjaverseNFTLibrary.Metadata memory) {
         uint64 key = randomDistinctItemFromAllPagination(rand);
-        ArNFTLibrary.Metadata memory currentWord;
+        ArjaverseNFTLibrary.Metadata memory currentWord;
 
         currentWord.background = uint8(key & 0xFF);
         key = key >> 8;
@@ -228,25 +240,15 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
             string(abi.encodePacked(_baseURI, _trait, "/", _traitArr, ".png"));
     }
 
-    function setVerifier(address _verifier) public onlyOwner {
-        verifier = IGroth16Verifier(_verifier);
-    }
-
     function _mint(address to) internal {
-        uint256 tokenId = totalSupply() + 1;
-        _safeMint(to, tokenId);
+        _safeMint(to, totalSupply() + 1);
     }
-
-    // function selfMint(address to) public onlyOwner {
-    //     uint256 tokenId = totalSupply() + 1;
-    //     _safeMint(to, tokenId);
-    // }
 
     function rollupMint(
         uint[2] memory a,
         uint[2][2] memory b,
         uint[2] memory c,
-        uint[64] memory input
+        uint[16] memory input
     )
         external
         onlyOwner
@@ -255,8 +257,9 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
             verifier.verifyProof(a, b, c, input),
             "Proof verification failed"
         );
-        for(uint256 i = 0; i < batchSize; i++) {
-            address to = address(uint160(input[batchSize + i]));
+        require(totalSupply() + BATCH_SZIE <= MAX_SUPPLY, "Exceeds max supply");
+        for(uint256 i = 0; i < BATCH_SZIE; i++) {
+            address to = address(uint160(input[BATCH_SZIE + i]));
             bool result = (input[i] == 1);
             emit AnswerResult(to, result);
             if(result) {
@@ -265,14 +268,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         }
     }
 
-    function updateBaseURI(string memory _newBaseURI) external onlyOwner {
-        BASE_URI = _newBaseURI;
-    }
-
-    function updateAnimationURI(string memory _newAnimationURI)
-        external
-        onlyOwner
-    {
+    function updateAnimationURI(string memory _newAnimationURI) external onlyOwner {
         baseAnimationURI = _newAnimationURI;
     }
 
@@ -286,8 +282,8 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         view
         returns (string memory)
     {
-        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
-        return ArNFTLibrary.getAttributesLeft(
+        ArjaverseNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
+        return ArjaverseNFTLibrary.getAttributesLeft(
             backgroundTraits[currentWord.background],
             specialEffectTraits[currentWord.effect],
             bodyTraits[currentWord.body]
@@ -299,8 +295,8 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         view
         returns (string memory)
     {
-        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
-        return ArNFTLibrary.getAttributesRight(
+        ArjaverseNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
+        return ArjaverseNFTLibrary.getAttributesRight(
             decorationTraits[currentWord.decoration],
             eyesTraits[currentWord.eyes],
             ballTraits[currentWord.ball]
@@ -309,7 +305,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
 
     function getAnimationUrl(uint256 _tokenId) private view returns (bytes memory) {
         string memory token = Strings.toString(_tokenId);
-        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
+        ArjaverseNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
         return abi.encodePacked(
             baseAnimationURI,
             '?bg=', backgroundTraits[currentWord.background],
@@ -324,7 +320,7 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         returns (string memory)
     {
         string memory token = Strings.toString(_tokenId);
-        ArNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
+        ArjaverseNFTLibrary.Metadata memory currentWord = tokenIdToMetadata[_tokenId];
         bytes memory imageHash = abi.encodePacked(
             currentWord.background.toString(), '-',
             currentWord.effect.toString(), '-',
@@ -371,22 +367,8 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         return buildMetadata(_tokenId);
     }
 
-    // function contractURI() public pure returns (string memory) {
-    //     return "https://arjaverse.art/contract.json";
-    // }
 
     // VRF
-    VRFCoordinatorV2Interface COORDINATOR;
-    LinkTokenInterface LINKTOKEN;
-    uint64 s_subscriptionId;
-    bytes32 keyHash = 0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15;
-
-    uint32 callbackGasLimit = 2000000;
-    uint16 requestConfirmations = 3;
-    uint256[] public s_randomWords;
-    // uint256 public s_requestId;
-    mapping(uint256 => uint256) public requestIdToTokenId;
-
     function setSubscriptionId(uint64 subscriptionId) public onlyOwner {
         s_subscriptionId = subscriptionId;
     }
@@ -413,10 +395,15 @@ contract ArjaGenerativeNFT is ERC721Enumerable, VRFConsumerBaseV2, Ownable {
         uint256,
         uint256[] memory randomWords
     ) internal override {
-        uint256 endTokenId = currentRevealId + randomWords.length;
-        for(uint256 tokenId = currentRevealId; tokenId < endTokenId; tokenId++) {
-            uint256 rand = randomWords[tokenId];
-            setWord(tokenId, rand);
+        for(uint256 index = 0; index < randomWords.length; index++) {
+            uint256 rand = randomWords[index];
+            setWord(currentRevealId + index, rand);
         }
+        currentRevealId += randomWords.length;
+    }
+
+    function reveal(uint32 _num) external onlyOwner {
+        require(currentRevealId <= MAX_SUPPLY, "All NFT revealed");
+        requestRandomWords(_num);
     }
 }

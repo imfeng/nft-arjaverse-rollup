@@ -2,7 +2,7 @@
 pragma solidity >=0.8.0 <0.9.0;
 import "./Base64.sol";
 
-library ArNFTLibrary {
+library ArjaverseNFTLibrary {
 
     struct Metadata {
         uint16 score;
