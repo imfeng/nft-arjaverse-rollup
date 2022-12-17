@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { utils } from 'ethers';
 import { publicKeyConvert } from 'secp256k1';
 import fs from 'fs';
-const batchSize = 4;
+const batchSize = 8;
 
 const circom_tester = require('circom_tester');
 const wasm_tester = circom_tester.wasm;

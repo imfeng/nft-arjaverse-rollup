@@ -6,7 +6,8 @@
   "scripts": {
     "hardhat": "ts-mocha",
     "test": "ts-mocha ./test/PrivateAirdropIntegration.spec.ts",
-    "test:ecc": "NODE_OPTIONS=--max_old_space_size=56000 mocha -r ts-node/register ./test/batch_ecdsa.ts"
+    "test:ecc": "NODE_OPTIONS=--max_old_space_size=56000 mocha -r ts-node/register ./test/batch_ecdsa.ts",
+    "gen": "NODE_OPTIONS=--max_old_space_size=56000 mocha -r ts-node/register ./scripts/5_gen_storage.ts"
   },
   "author": "sragss",
   "license": "ISC",
